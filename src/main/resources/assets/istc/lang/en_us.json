@@ -4,8 +4,10 @@
   "msg.istc.answer.success": "Bingo!",
   "msg.istc.answer.late": "You were right, but it's too late :DDDD",
   "msg.istc.answer.incorrect": "Wut? You really should think twice!",
+  "msg.istc.answer.idk": "Eh, no idea",
   "msg.istc.record.result": "Correct responses to the question",
   "msg.istc.record.output": "{0} spent {1}",
   "msg.istc.score.details": "Player: {0}, Correct Frequency: {1}, Total Score Gained: {2}",
+  "msg.istc.score.unknown": "You have not answered any question correctly :(",
   "unit.istc.second": "{0} sec"
 }

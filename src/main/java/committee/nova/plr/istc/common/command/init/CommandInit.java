@@ -18,6 +18,7 @@ public class CommandInit {
         dispatcher.register(Commands.literal("answer").then(AnswerCommand.register()));
         dispatcher.register(Commands.literal("istc").then(Commands.literal("query").requires(e -> e.hasPermission(0)).then(QueryCommand.registerQ())));
         dispatcher.register(Commands.literal("istc").then(Commands.literal("query").requires(e -> e.hasPermission(0)).then(QueryCommand.registerS())));
+        dispatcher.register(Commands.literal("istc").then(Commands.literal("query").requires(e -> e.hasPermission(0)).then(QueryCommand.registerA())));
         dispatcher.register(Commands.literal("istc").then(Commands.literal("admin").requires(e -> e.hasPermission(2)).then(AdminCommand.register())));
     }
 }

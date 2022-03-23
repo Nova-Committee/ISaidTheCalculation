@@ -25,6 +25,10 @@ public class DataUtils {
             addScore(server, record);
         }
         center.announceRecord(server);
+        start(server, center);
+    }
+
+    public static void start(MinecraftServer server, DataCenter center) {
         center.clearRecord();
         final Question q = generateQuestion();
         center.setQuestion(q);

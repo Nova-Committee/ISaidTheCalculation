@@ -3,9 +3,11 @@
   "msg.istc.question.details": "题目：{0}，难度：{1}，剩余时间：{2}",
   "msg.istc.answer.success": "对头！",
   "msg.istc.answer.late": "正确的，但为时已晚",
-  "msg.istc.answer.incorrect": "戳啦，再想想嘛~",
+  "msg.istc.answer.incorrect": "戳啦，多想想嘛~",
+  "msg.istc.answer.idk": "我不到啊",
   "msg.istc.record.result": "正确回答者：",
   "msg.istc.record.output": "{0}，回答花费了{1}",
   "msg.istc.score.details": "玩家：{0}，答对次数：{1}，获得总积分：{2}",
+  "msg.istc.score.unknown": "你似乎还未正确作答过 :(",
   "unit.istc.second": "{0}秒"
 }
