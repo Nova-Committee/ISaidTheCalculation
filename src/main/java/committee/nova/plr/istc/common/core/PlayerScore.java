@@ -1,8 +1,10 @@
 package committee.nova.plr.istc.common.core;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 public class PlayerScore {
@@ -55,5 +57,10 @@ public class PlayerScore {
 
     public long getTotalScore() {
         return totalScore;
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(new TranslatableComponent("msg.istc.score.details").getString(), name, correctFreq, totalScore);
     }
 }

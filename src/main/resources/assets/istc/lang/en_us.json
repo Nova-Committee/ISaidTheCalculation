@@ -1,0 +1,11 @@
+{
+  "msg.istc.question.title": "Question: {0}",
+  "msg.istc.question.details": "Question Title: {0}, Difficulty: {1}, Time Left: {2}",
+  "msg.istc.answer.success": "Bingo!",
+  "msg.istc.answer.late": "You were right, but it's too late :DDDD",
+  "msg.istc.answer.incorrect": "Wut? You really should think twice!",
+  "msg.istc.record.result": "Correct responses to the question",
+  "msg.istc.record.output": "{0} spent {1}",
+  "msg.istc.score.details": "Player: {0}, Correct Frequency: {1}, Total Score Gained: {2}",
+  "unit.istc.second": "{0} sec"
+}

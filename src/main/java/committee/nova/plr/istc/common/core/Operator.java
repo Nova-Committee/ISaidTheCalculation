@@ -2,12 +2,7 @@ package committee.nova.plr.istc.common.core;
 
 import java.text.MessageFormat;
 
-public class Operator {
-    private final int type;
-
-    public Operator(int type) {
-        this.type = type;
-    }
+public record Operator(int type) {
 
     public int getResult(int a, int b) {
         return switch (type) {
@@ -18,8 +13,11 @@ public class Operator {
     }
 
     public String getTitle(int a, int b) {
-        final String strB = b < 0 ? MessageFormat.format("({0})", b) : String.valueOf(b);
-        return MessageFormat.format("{0} {1} {2} = ?", a, getOperatorString(), b);
+        return MessageFormat.format("{0} {1} {2} = ?", formattedNumber(a), getOperatorString(), formattedNumber(b));
+    }
+
+    public String formattedNumber(int i) {
+        return i < 0 ? MessageFormat.format("({0})", i) : String.valueOf(i);
     }
 
     public String getOperatorString() {

@@ -3,7 +3,7 @@ loaderVersion = "[38,)"
 license = "AGPL v3"
 [[mods]]
 modId = "istc"
-version = "1.0.1"
+version = "1.0.0"
 displayName = "ISTC"
 credits = ""
 authors = "Tapio"
