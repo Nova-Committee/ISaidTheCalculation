@@ -16,12 +16,19 @@ version = '1.18.1-1.0.0'
 group = 'committee.nova.istc'
 archivesBaseName = 'ISTC'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java {
+    archivesBaseName = 'PortableCraft-forge'
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
 
-    mappings channel: 'official', version: '1.18.1'
+    mappings channel: 'official', version: '1.16.5'
     runs {
         client {
             workingDirectory project.file('run')
@@ -72,7 +79,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
 
-    minecraft 'net.minecraftforge:forge:1.18.1-39.1.2'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.22'
 
 
 }

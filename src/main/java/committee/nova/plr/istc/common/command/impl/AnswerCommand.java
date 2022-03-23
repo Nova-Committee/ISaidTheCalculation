@@ -8,30 +8,30 @@ import committee.nova.plr.istc.common.core.DataCenter;
 import committee.nova.plr.istc.common.core.Question;
 import committee.nova.plr.istc.common.tool.DataUtils;
 import committee.nova.plr.istc.common.tool.PlayerHandler;
-import net.minecraft.commands.CommandRuntimeException;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.text.MessageFormat;
 
 
 public class AnswerCommand {
-    public static ArgumentBuilder<CommandSourceStack, ?> register() {
+    public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.argument("result", IntegerArgumentType.integer()).executes(AnswerCommand::answerExecution);
     }
 
-    public static int answerExecution(CommandContext<CommandSourceStack> context) throws CommandRuntimeException, CommandSyntaxException {
-        final Player player = context.getSource().getPlayerOrException();
+    public static int answerExecution(CommandContext<CommandSource> context) throws CommandException, CommandSyntaxException {
+        final PlayerEntity player = context.getSource().getPlayerOrException();
         final int answer = context.getArgument("result", Integer.class);
         final Question q = DataCenter.getInstance().getQuestion();
         if (answer == q.getAnswer()) {
             final int total = q.getTotalTime();
             final boolean b = DataUtils.addRecord(player, total - q.getTimeLeft(), total);
-            PlayerHandler.notifyServerPlayer(player, new TranslatableComponent(MessageFormat.format("msg.istc.answer.{0}", b ? "success" : "late")));
+            PlayerHandler.notifyServerPlayer(player, new TranslationTextComponent(MessageFormat.format("msg.istc.answer.{0}", b ? "success" : "late")));
         } else {
-            PlayerHandler.notifyServerPlayer(player, new TranslatableComponent("msg.istc.answer.incorrect"));
+            PlayerHandler.notifyServerPlayer(player, new TranslationTextComponent("msg.istc.answer.incorrect"));
         }
         return 0;
     }

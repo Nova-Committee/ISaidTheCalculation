@@ -3,16 +3,16 @@ package committee.nova.plr.istc.common;
 import committee.nova.plr.istc.common.config.CommonConfig;
 import committee.nova.plr.istc.common.core.DataCenter;
 import committee.nova.plr.istc.common.tool.DataUtils;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 
 import java.util.List;
 
@@ -27,19 +27,19 @@ public class ISTC {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public void onServerStarted(ServerStartedEvent event) {
-        final ServerLevel world = event.getServer().overworld();
+    public void onServerStarted(FMLServerStartedEvent event) {
+        final ServerWorld world = event.getServer().overworld();
         if (!world.isClientSide) {
-            final DataCenter dataCenter = world.getDataStorage().computeIfAbsent(DataCenter::new, DataCenter::new, DataCenter.NAME);
+            final DataCenter dataCenter = world.getDataStorage().computeIfAbsent(DataCenter::new, DataCenter.NAME);
             DataCenter.setInstance(dataCenter);
         }
     }
 
     public void onPlayerJoinWorld(EntityJoinWorldEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof PlayerEntity)) return;
         final MinecraftServer server = event.getEntity().getServer();
         if (server == null) return;
-        final List<ServerPlayer> list = server.getPlayerList().getPlayers();
+        final List<ServerPlayerEntity> list = server.getPlayerList().getPlayers();
         if (list.size() <= 1) DataUtils.start(server, DataCenter.getInstance());
     }
 }

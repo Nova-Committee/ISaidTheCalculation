@@ -2,14 +2,24 @@ package committee.nova.plr.istc.common.core;
 
 import java.text.MessageFormat;
 
-public record Operator(int type) {
+public class Operator {
+
+    int type;
+
+    public Operator(int type) {
+        this.type = type;
+    }
 
     public int getResult(int a, int b) {
-        return switch (type) {
-            case 0 -> a + b;
-            case 1 -> a - b;
-            default -> a * b;
-        };
+        switch (type) {
+            case 0:
+                return a + b;
+            case 1:
+                return a - b;
+            default:
+                return a * b;
+        }
+
     }
 
     public String getTitle(int a, int b) {
@@ -21,10 +31,18 @@ public record Operator(int type) {
     }
 
     public String getOperatorString() {
-        return switch (type) {
-            case 0 -> "+";
-            case 1 -> "-";
-            default -> "*";
-        };
+        switch (type) {
+            case 0:
+                return "+";
+            case 1:
+                return "-";
+            default:
+                return "*";
+        }
     }
+
+    public int getType() {
+        return type;
+    }
+
 }

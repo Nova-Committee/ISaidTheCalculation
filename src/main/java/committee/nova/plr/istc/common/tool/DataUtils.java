@@ -2,13 +2,13 @@ package committee.nova.plr.istc.common.tool;
 
 import committee.nova.plr.istc.common.config.CommonConfig;
 import committee.nova.plr.istc.common.core.*;
-import net.minecraft.Util;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -32,29 +32,30 @@ public class DataUtils {
         center.clearRecord();
         final Question q = generateQuestion();
         center.setQuestion(q);
-        broadcast(server, new TextComponent(q.getQuestionTitle()));
+        broadcast(server, new StringTextComponent(q.getQuestionTitle()));
         DataCenter.getInstance().setDirty();
     }
 
+
     public static Question generateQuestion() {
         final Random random = new Random();
-        final int range = random.nextInt(1, 5);
-        final Operator operator = new Operator(random.nextInt(1, 4));
+        final int range = RandomUtils.nextInt(1, 5);
+        final Operator operator = new Operator(RandomUtils.nextInt(1, 4));
         final int max = (int) Math.pow(10, range);
-        final int a = random.nextInt(-max, max + 1);
-        final int b = random.nextInt(-max, max + 1);
+        final int a = RandomUtils.nextInt(-max, max + 1);
+        final int b = RandomUtils.nextInt(-max, max + 1);
         final int result = operator.getResult(a, b);
-        final int difficulty = range * (operator.type() == 2 ? 2 : 1);
+        final int difficulty = range * (operator.getType() == 2 ? 2 : 1);
         return new Question(result, difficulty, operator.getTitle(a, b), CommonConfig.TIME_FOR_A_QUESTION.get());
     }
 
 
-    public static void broadcast(MinecraftServer server, Component component) {
+    public static void broadcast(MinecraftServer server, ITextComponent component) {
         if (server == null) return;
         server.getPlayerList().broadcastMessage(component, ChatType.CHAT, Util.NIL_UUID);
     }
 
-    public static boolean addRecord(Player player, int timeSpent, int timeGiven) {
+    public static boolean addRecord(PlayerEntity player, int timeSpent, int timeGiven) {
         final UUID uuid = player.getUUID();
         final DataCenter center = DataCenter.getInstance();
         final Map<UUID, PlayerRecord> records = center.getRecordList();
@@ -74,7 +75,7 @@ public class DataUtils {
         final PlayerScore score = scores.get(uuid);
         final long correct = score != null ? score.getCorrectFreq() + 1 : 1;
         final int scoreToAdd = calculateScore(record.getTimeSpent(), record.getTimeGiven());
-        final ServerPlayer player = server.getPlayerList().getPlayer(uuid);
+        final ServerPlayerEntity player = server.getPlayerList().getPlayer(uuid);
         if (player != null) player.giveExperiencePoints(scoreToAdd / 10);
         final long total = score != null ? score.getTotalScore() + scoreToAdd : scoreToAdd;
         scores.put(uuid, new PlayerScore(record.getPlayerName(), uuid, correct, total));
@@ -82,7 +83,7 @@ public class DataUtils {
     }
 
     @Nullable
-    public static PlayerScore queryScore(Player player) {
+    public static PlayerScore queryScore(PlayerEntity player) {
         final UUID uuid = player.getUUID();
         return DataCenter.getInstance().getScoreList().get(uuid);
     }

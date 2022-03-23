@@ -1,6 +1,6 @@
 package committee.nova.plr.istc.common.core;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ public class PlayerRecord {
     private final int timeSpent;
     private final int timeGiven;
 
-    public PlayerRecord(Player player, int timeSpent, int timeGiven) {
+    public PlayerRecord(PlayerEntity player, int timeSpent, int timeGiven) {
         this.name = player.getName().getString();
         this.uuid = player.getUUID();
         this.timeSpent = timeSpent;

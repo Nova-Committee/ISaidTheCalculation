@@ -1,14 +1,13 @@
 package committee.nova.plr.istc.common.core;
 
 import committee.nova.plr.istc.common.tool.DataUtils;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DataCenter extends SavedData {
+public class DataCenter extends WorldSavedData {
     public static final String NAME = "istc";
     private static DataCenter INSTANCE;
     private final Map<UUID, PlayerRecord> recordList = new HashMap<>();
@@ -25,13 +24,19 @@ public class DataCenter extends SavedData {
     private Question question = new Question(-99999, 0, "", 5000);
 
     public DataCenter() {
-        super();
+        super(NAME);
         this.setDirty();
     }
 
-    public DataCenter(CompoundTag tag) {
+    public DataCenter(CompoundNBT nbt) {
+        super(NAME);
+        this.load(nbt);
+        this.setDirty();
+    }
 
-        final ListTag scores = tag.getList("scores", Tag.TAG_COMPOUND);
+    @Override
+    public void load(CompoundNBT tag) {
+        final ListNBT scores = tag.getList("scores", 7);
         synchronized (scoreList) {
             scoreList.clear();
             final int scoreSize = scores.size();
@@ -44,6 +49,7 @@ public class DataCenter extends SavedData {
         this.setDirty();
     }
 
+
     public static DataCenter getInstance() {
         return INSTANCE;
     }
@@ -54,12 +60,12 @@ public class DataCenter extends SavedData {
 
     @Nonnull
     @Override
-    public CompoundTag save(@Nonnull CompoundTag tag) {
-        final ListTag scores = new ListTag();
+    public CompoundNBT save(@Nonnull CompoundNBT tag) {
+        final ListNBT scores = new ListNBT();
         synchronized (scoreList) {
             final Collection<PlayerScore> ss = scoreList.values();
             for (final PlayerScore score : ss) {
-                final CompoundTag scoreTag = new CompoundTag();
+                final CompoundNBT scoreTag = new CompoundNBT();
                 scoreTag.putString("name", score.getPlayerName());
                 scoreTag.putUUID("uuid", score.getPlayerUUID());
                 scoreTag.putLong("correct", score.getCorrectFreq());
@@ -92,10 +98,10 @@ public class DataCenter extends SavedData {
     public void announceRecord(MinecraftServer server) {
         final int size = recordList.size();
         if (size == 0) return;
-        DataUtils.broadcast(server, new TranslatableComponent("msg.istc.record.result"));
+        DataUtils.broadcast(server, new TranslationTextComponent("msg.istc.record.result"));
         final Collection<PlayerRecord> records = recordList.values();
         for (final PlayerRecord record : records) {
-            DataUtils.broadcast(server, new TextComponent(MessageFormat.format(new TranslatableComponent("msg.istc.record.output").getString(), record.getPlayerName(), getFormattedTimeSpent(record.getTimeSpent()).getString())));
+            DataUtils.broadcast(server, new StringTextComponent(MessageFormat.format(new TranslationTextComponent("msg.istc.record.output").getString(), record.getPlayerName(), getFormattedTimeSpent(record.getTimeSpent()).getString())));
         }
     }
 
@@ -104,7 +110,7 @@ public class DataCenter extends SavedData {
         this.setDirty();
     }
 
-    public Component getFormattedTimeSpent(int time) {
-        return new TextComponent(MessageFormat.format(new TranslatableComponent("unit.istc.second").getString(), time / 20));
+    public ITextComponent getFormattedTimeSpent(int time) {
+        return new StringTextComponent(MessageFormat.format(new TranslationTextComponent("unit.istc.second").getString(), time / 20));
     }
 }

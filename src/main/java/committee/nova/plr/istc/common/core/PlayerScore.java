@@ -1,8 +1,8 @@
 package committee.nova.plr.istc.common.core;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -20,15 +20,15 @@ public class PlayerScore {
         this.totalScore = total;
     }
 
-    public PlayerScore(Player player, long cor, long total) {
+    public PlayerScore(PlayerEntity player, long cor, long total) {
         this(player.getName().getString(), player.getUUID(), cor, total);
     }
 
-    public PlayerScore(Player player) {
+    public PlayerScore(PlayerEntity player) {
         this(player, 0, 0);
     }
 
-    public PlayerScore(CompoundTag tag) {
+    public PlayerScore(CompoundNBT tag) {
         this.name = tag.getString("name");
         this.uuid = tag.getUUID("uuid");
         this.correctFreq = tag.getLong("correct");
@@ -61,6 +61,6 @@ public class PlayerScore {
 
     @Override
     public String toString() {
-        return MessageFormat.format(new TranslatableComponent("msg.istc.score.details").getString(), name, correctFreq, totalScore);
+        return MessageFormat.format(new TranslationTextComponent("msg.istc.score.details").getString(), name, correctFreq, totalScore);
     }
 }
