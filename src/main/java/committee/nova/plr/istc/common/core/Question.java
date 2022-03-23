@@ -1,8 +1,9 @@
 package committee.nova.plr.istc.common.core;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.text.MessageFormat;
 
@@ -54,15 +55,15 @@ public class Question {
     }
 
     public String getQuestionTitle() {
-        return MessageFormat.format(new TranslatableComponent("msg.istc.question.title").getString(), this.getStr());
+        return MessageFormat.format(new TranslationTextComponent("msg.istc.question.title").getString(), this.getStr());
     }
 
     @Override
     public String toString() {
-        return MessageFormat.format(new TranslatableComponent("msg.istc.question.details").getString(), str, difficulty, getFormattedTimeLeft().getString());
+        return MessageFormat.format(new TranslationTextComponent("msg.istc.question.details").getString(), str, difficulty, getFormattedTimeLeft().getString());
     }
 
-    public Component getFormattedTimeLeft() {
-        return new TextComponent(MessageFormat.format(new TranslatableComponent("unit.istc.second").getString(), timeLeft / 20));
+    public ITextComponent getFormattedTimeLeft() {
+        return new StringTextComponent(MessageFormat.format(new TranslationTextComponent("unit.istc.second").getString(), timeLeft / 20));
     }
 }
