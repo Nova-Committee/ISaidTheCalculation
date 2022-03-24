@@ -36,6 +36,7 @@ public class ISTC {
     }
 
     public void onPlayerJoinWorld(EntityJoinWorldEvent event) {
+        if (!CommonConfig.AUTO_REFRESH.get()) return;
         if (!(event.getEntity() instanceof Player)) return;
         final MinecraftServer server = event.getEntity().getServer();
         if (server == null) return;

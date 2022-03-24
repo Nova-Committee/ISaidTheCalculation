@@ -30,7 +30,6 @@ public class DataCenter extends SavedData {
     }
 
     public DataCenter(CompoundTag tag) {
-
         final ListTag scores = tag.getList("scores", Tag.TAG_COMPOUND);
         synchronized (scoreList) {
             scoreList.clear();
