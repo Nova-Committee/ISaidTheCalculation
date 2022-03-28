@@ -10,8 +10,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 
 public class AdminCommand {
-    public static ArgumentBuilder<CommandSourceStack, ?> register() {
-        return Commands.literal("complete").executes(AdminCommand::complete).then(Commands.literal("start").executes(AdminCommand::start));
+    public static ArgumentBuilder<CommandSourceStack, ?> registerC() {
+        return Commands.literal("complete").executes(AdminCommand::complete);
+    }
+
+    public static ArgumentBuilder<CommandSourceStack, ?> registerS() {
+        return Commands.literal("start").executes(AdminCommand::start);
     }
 
     public static int complete(CommandContext<CommandSourceStack> context) throws CommandRuntimeException {
